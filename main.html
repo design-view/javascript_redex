@@ -57,7 +57,11 @@
                         })
                         " 
                         href="#">create</a></li>
-                    <li><button>delete</button></li>
+                    <li><button onclick="
+                        store.dispatch({
+                            type:'DELETE'
+                        })    
+                    ">delete</button></li>
                 </ul>
             `;
         }
@@ -137,12 +141,22 @@
                 });
             }else if(action.type === 'CHANGE_MODE'){
                 newState = Object.assign({},state,{ mode: action.mode });
+            }else if(action.type === 'DELETE'){
+                //contents배열을 변경해야함
+                //mode는 welcome모드로 변경
+                let newContents = state.contents.filter((con)=> state.selected_id !== con.id );
+                newState = Object.assign({}, state, {
+                    contents: newContents,
+                    mode: 'welcome'
+                })
             }
+
             console.log(state,action,newState);
             return newState;
         }
         store.subscribe(article);
         store.subscribe(TOC);
+        store.subscribe(control);
     </script>
 </body>
 </html>
